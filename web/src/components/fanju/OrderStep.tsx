@@ -8,7 +8,9 @@ import { planOrder, readMenu, type Constraint, type Dish, type OrderPlan, type V
 
 import { Failed, Step, Working, errorText, yuan } from "./shared";
 
-type Phase = { k: "idle" } | { k: "reading" } | { k: "planning" } | { k: "error"; msg: string; retry: () => void };
+const SAMPLE_MENU = "./sample-menu.jpg"; // hash routing keeps the path at the app root
+
+type Phase ={ k: "idle" } | { k: "reading" } | { k: "planning" } | { k: "error"; msg: string; retry: () => void };
 
 export function OrderStep({ venue, people, order, onOrder }: {
   venue: Venue;
@@ -18,8 +20,9 @@ export function OrderStep({ venue, people, order, onOrder }: {
 }) {
   const [menu, setMenu] = useState<Dish[]>([]);
   const [phase, setPhase] = useState<Phase>({ k: "idle" });
+  const [sample, setSample] = useState(false);
 
-  async function read(file: File) {
+  async function read(file: Blob) {
     setPhase({ k: "reading" });
     onOrder(null);
     try {
@@ -29,6 +32,13 @@ export function OrderStep({ venue, people, order, onOrder }: {
     } catch (e) {
       setPhase({ k: "error", msg: errorText(e), retry: () => read(file) });
     }
+  }
+
+  async function loadSample() {
+    setSample(true);
+    const r = await fetch(SAMPLE_MENU);
+    if (!r.ok) return setPhase({ k: "error", msg: "示例菜单没加载出来，请刷新后再试", retry: loadSample });
+    read(await r.blob());
   }
 
   async function plan() {
@@ -53,12 +63,23 @@ export function OrderStep({ venue, people, order, onOrder }: {
       <div className="flex gap-2">
         <label className={`flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-md bg-primary px-3 py-2.5 text-sm font-medium text-primary-foreground ${busy ? "pointer-events-none opacity-50" : ""}`}>
           <Camera className="size-4" /> {menu.length ? "重拍菜单" : "拍菜单"}
-          <input type="file" accept="image/*" capture="environment" className="sr-only" onChange={e => e.target.files?.[0] && read(e.target.files[0])} />
+          <input type="file" accept="image/*" capture="environment" className="sr-only" onChange={e => { if (e.target.files?.[0]) { setSample(false); read(e.target.files[0]); } }} />
         </label>
         {menu.length === 0 && (
           <Button variant="outline" onClick={() => setMenu([{ name: "", price: null }])} disabled={busy}>手动输入菜</Button>
         )}
       </div>
+      {!busy && (
+        <button onClick={loadSample} className="mt-2 text-sm text-primary underline underline-offset-4">没在店里？用一张示例菜单试试</button>
+      )}
+      {sample && (
+        <figure className="mt-3">
+          <img src={SAMPLE_MENU} alt="示例菜单照片" className="max-h-64 rounded-sm border" />
+          <figcaption className="mt-1 text-xs text-muted-foreground">
+            示例菜单：广州莲香楼的真实菜单照片，不是上面这家店的。摄影 MeiOLA 2290 WMENSZ，CC0，来自 Wikimedia Commons。
+          </figcaption>
+        </figure>
+      )}
 
       {phase.k === "reading" && <div className="mt-3"><Working what="正在读菜单上的菜名和价格" /></div>}
 

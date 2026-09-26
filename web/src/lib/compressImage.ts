@@ -1,5 +1,5 @@
 // Shrink a phone photo to ~1600px JPEG before upload; menus stay legible at this size.
-export async function compressImage(file: File, maxSide = 1600): Promise<string> {
+export async function compressImage(file: Blob,maxSide = 1600): Promise<string> {
   const bitmap = await createImageBitmap(file);
   const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));
   const canvas = document.createElement("canvas");
