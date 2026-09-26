@@ -8,7 +8,9 @@ import { planOrder, readMenu, type Constraint, type Dish, type OrderPlan, type V
 
 import { Failed, Step, Working, errorText, yuan } from "./shared";
 
-const SAMPLE_MENU = "./sample-menu.jpg"; // hash routing keeps the path at the app root
+// The published site serves the page and its static files from different hosts, so a page-relative path misses.
+// public/ files sit one level above the built chunk in assets/. ponytail: assumes the built layout; the dev server is not used here.
+const SAMPLE_MENU = import.meta.url.replace(/assets\/[^/]+$/, "sample-menu.jpg");
 
 type Phase ={ k: "idle" } | { k: "reading" } | { k: "planning" } | { k: "error"; msg: string; retry: () => void };
 
