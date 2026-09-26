@@ -1,6 +1,7 @@
-// Bailian (DashScope) OpenAI-compatible endpoint. qwen3.7-flash is a native
-// vision-language model, so the same model reads menus and plans orders.
-const URL = 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions';
+// Bailian OpenAI-compatible endpoint on the workspace domain; the shared
+// dashscope.aliyuncs.com domain goes into maintenance mode on 2026-09-30.
+// qwen3.7-flash is a native vision-language model, so it reads menus too.
+const URL = 'https://llm-wactc2juuddfp1aa.cn-beijing.maas.aliyuncs.com/compatible-mode/v1/chat/completions';
 const MODEL = 'qwen3.7-flash';
 
 export async function chatJson(messages) {
