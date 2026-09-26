@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Feedback } from "@/components/fanju/Feedback";
@@ -23,6 +23,11 @@ function Index() {
   const [order, setOrder] = useState<OrderPlan | null>(null);
   const step2 = useRef<HTMLDivElement>(null);
   const step3 = useRef<HTMLDivElement>(null);
+
+  // The QMuse preview serves its own HTML shell, so set the title here.
+  useEffect(() => {
+    document.title = "MeetSpot 饭局";
+  }, []);
 
   async function findVenue(forPeople = people, forCity = city) {
     setVenue({ k: "working" });

@@ -5,9 +5,6 @@ import { RouterProvider } from "@tanstack/react-router";
 import { getRouter } from "./router";
 import "./styles.css";
 
-// The QMuse preview serves its own HTML shell, so set the title here.
-document.title = "MeetSpot 饭局";
-
 const router = getRouter();
 
 function reportFatalReactError(

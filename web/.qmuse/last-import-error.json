@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "jobId": "import_a05bdf43-192f-4b93-99c4-3df0f93a577c",
+  "status": "FAILED",
+  "stage": "FAILED",
+  "message": "源代码未通过导入校验，请修复后重新导入",
+  "diagnostic": "QMuse migration blocked: Unsupported top-level source entry statement: document.title = \"MeetSpot 饭局\";",
+  "failureDiagnostic": {
+    "version": 1,
+    "category": "SOURCE_CODE",
+    "stage": "MIGRATING_SOURCE",
+    "summary": "QMuse migration blocked: Unsupported top-level source entry statement: document.title = \"MeetSpot 饭局\";",
+    "fixableByModel": true,
+    "suggestedAction": "FIX_SOURCE_AND_RETRY",
+    "items": [
+      {
+        "message": "QMuse migration blocked: Unsupported top-level source entry statement: document.title = \"MeetSpot 饭局\";"
+      }
+    ]
+  },
+  "retryCommand": "qmuse import . --env prod",
+  "retryAdvice": "在当前项目目录修复源码后执行，将更新已绑定的应用。",
+  "environment": "prod",
+  "generatedAt": "2026-09-26T06:24:48.074Z"
+}
