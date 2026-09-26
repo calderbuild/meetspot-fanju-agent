@@ -7,7 +7,8 @@ export const ALLERGY_DISCLAIMER = '过敏原请向店员确认';
 const SEAFOOD = /海鲜|海产|虾|蟹|贝|蚝|鲍|刺身|寿司|日本料理|鱼/;
 const MEAT_CENTRIC = /烧烤|烤肉|烤串|烤鸭|牛排|羊蝎子|炸鸡|涮肉|牛肉|羊肉|肉蟹|海鲜/;
 const MEAT_DISH = /肉|鸡|鸭|鹅|牛|羊|猪|排骨|肠|肚|腰|肝|虾|蟹|鱼|贝|蚝|鲍|培根|火腿/;
-const NOT_A_MEAL = /咖啡|茶|甜品|面包|冷饮|糕饼|酒吧/;
+// Places that are not a sit-down group meal.
+const NOT_A_MEAL = /咖啡|茶|甜品|面包|冷饮|糕饼|酒吧|早餐|早点|便利/;
 
 // Amap returns [] for empty fields; treat that the same as missing.
 const text = v => (typeof v === 'string' ? v : '');
@@ -29,24 +30,30 @@ function allergenPattern(allergen) {
   return /海鲜|虾|蟹|贝/.test(allergen) ? SEAFOOD : new RegExp(allergen);
 }
 
+// Quote where the keyword was found so the explanation is checkable by the reader.
+function findHit(venue, pattern) {
+  for (const [field, label] of [['name', '店名'], ['type', '品类'], ['tag', '招牌菜']]) {
+    const m = venue[field].match(pattern);
+    if (m) return `${label}含「${m[0]}」`;
+  }
+  return null;
+}
+
 // Stage 1: exclusion only. Passing venues are never claimed to satisfy anything.
 export function screenVenue(venue, people) {
-  const haystack = `${venue.name} ${venue.type} ${venue.tag}`;
   const violations = [];
   for (const p of people) {
     if (p.budget_max && venue.cost !== null && venue.cost > p.budget_max) {
       violations.push({ who: p.who, rule: '预算', reason: `人均 ${venue.cost} 元，超过 ${p.budget_max} 元` });
     }
-    if (p.avoid_seafood && SEAFOOD.test(haystack)) {
-      violations.push({ who: p.who, rule: '不吃海鲜', reason: '店名或品类是海鲜类' });
-    }
-    if (p.vegetarian && MEAT_CENTRIC.test(haystack)) {
-      violations.push({ who: p.who, rule: '吃素', reason: '店名或品类以肉食为主' });
-    }
-    for (const a of p.allergens ?? []) {
-      if (allergenPattern(a).test(haystack)) {
-        violations.push({ who: p.who, rule: `${a}过敏`, reason: `店名或品类涉及${a}` });
-      }
+    const checks = [
+      [p.avoid_seafood, '不吃海鲜', SEAFOOD],
+      [p.vegetarian, '吃素', MEAT_CENTRIC],
+      ...(p.allergens ?? []).map(a => [true, `${a}过敏`, allergenPattern(a)]),
+    ];
+    for (const [on, rule, pattern] of checks) {
+      const hit = on && findHit(venue, pattern);
+      if (hit) violations.push({ who: p.who, rule, reason: hit });
     }
   }
   return violations;

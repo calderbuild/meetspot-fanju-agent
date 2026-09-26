@@ -1,0 +1,68 @@
+{
+  "databaseId": "qmuse-app-db",
+  "projectAlias": "default",
+  "tables": [
+    {
+      "tableId": "dinner_feedback",
+      "name": "饭局反馈",
+      "columns": [
+        {
+          "key": "rating",
+          "type": "integer",
+          "comment": "有用程度（1-5）",
+          "required": true
+        },
+        {
+          "key": "stage",
+          "type": "string",
+          "format": "enum",
+          "elements": [
+            "venue",
+            "order"
+          ],
+          "size": 64,
+          "comment": "反馈的环节",
+          "required": true
+        },
+        {
+          "key": "headcount",
+          "type": "integer",
+          "comment": "人数",
+          "required": false
+        },
+        {
+          "key": "venue_name",
+          "type": "string",
+          "size": 255,
+          "comment": "最后去的店",
+          "required": false
+        },
+        {
+          "key": "comment",
+          "type": "string",
+          "size": 500,
+          "comment": "一句话反馈",
+          "required": false
+        }
+      ]
+    }
+  ],
+  "functions": [
+    {
+      "functionId": "fanju",
+      "name": "饭局规划",
+      "runtime": "node-22",
+      "entrypoint": "src/main.js",
+      "commands": "npm install",
+      "timeout": 90,
+      "enabled": true,
+      "execute": [
+        "users"
+      ],
+      "scopes": [
+        "databases.read"
+      ],
+      "path": "functions/fanju"
+    }
+  ]
+}

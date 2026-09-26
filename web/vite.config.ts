@@ -1,7 +1,11 @@
-import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { defineConfig } from '@qmuse/vite-config';
 
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [react()],
-})
+// @qmuse/vite-config already includes the following — do NOT add or register
+// them again, or the app may break because of duplicate plugins:
+//   - TanStack Router
+//   - React
+//   - Tailwind CSS
+//   - TypeScript path aliases
+//
+// Add only genuinely additional configuration through defineConfig({ ... }).
+export default defineConfig();

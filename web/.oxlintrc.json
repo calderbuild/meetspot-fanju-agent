@@ -1,8 +1,33 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
+  "env": {
+    "browser": true
+  },
+  "plugins": [
+    "react",
+    "typescript",
+    "oxc"
+  ],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "off",
+    "pedantic": "off",
+    "perf": "off",
+    "style": "off",
+    "restriction": "off",
+    "nursery": "off"
+  },
+  "ignorePatterns": [
+    "dist/**",
+    "src/routeTree.gen.ts"
+  ],
   "rules": {
+    "typescript/no-require-imports": "error",
     "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
+    "react/exhaustive-deps": "warn",
+    "react/react-in-jsx-scope": "off",
+    "no-unused-vars": "off",
+    "no-unused-labels": "off",
+    "no-unused-private-class-members": "off"
   }
 }

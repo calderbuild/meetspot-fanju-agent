@@ -36,6 +36,17 @@ test('venue stage rejects with named reasons and never claims verification', () 
   assert.match(picks[1].note, /价格未知/);
 });
 
+test('rejection reason quotes the field and keyword that matched', () => {
+  const { attempts } = planVenue([{ id: 't', name: '财火铁锅炖', type: '餐饮服务;中餐厅', tag: '铁锅炖大鹅,铁锅炖鱼', biz_ext: { cost: '60', rating: '4.4' } }], people);
+  const v = attempts[0].violations.find(v => v.who === '小李');
+  assert.equal(v.reason, '招牌菜含「鱼」');
+});
+
+test('breakfast spots are not offered as a group dinner', () => {
+  const { attempts } = planVenue([poi('海忠便民餐馆(和平里便民早餐点)', '餐饮服务;餐饮相关场所', '20')], people);
+  assert.equal(attempts.length, 0);
+});
+
 const menu = [
   { name: '宫保鸡丁', price: 48 },
   { name: '清炒时蔬', price: 28 },
