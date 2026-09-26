@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>MeetSpot 饭局封面</title>
+<style>
+  :root {
+    --bg: oklch(0.947 0.014 152);
+    --ink: oklch(0.26 0.045 266);
+    --primary: oklch(0.44 0.15 266);
+    --veto: oklch(0.55 0.18 29);
+    --muted: oklch(0.48 0.03 266);
+  }
+  * { margin: 0; box-sizing: border-box; }
+  body { width: 1920px; height: 1080px; background: var(--bg); color: var(--ink); overflow: hidden; position: relative;
+         font-family: "PingFang SC", "Hiragino Sans GB", sans-serif; }
+  .copy { position: absolute; left: 120px; top: 190px; width: 700px; }
+  .brand { font-size: 30px; letter-spacing: 0.08em; color: var(--muted); }
+  h1 { margin-top: 36px; font-family: "Kaiti SC", STKaiti, KaiTi, serif; font-weight: 400; font-size: 92px; line-height: 1.25; }
+  h1 .strike { position: relative; }
+  .steps { margin-top: 56px; font-size: 32px; line-height: 1.7; color: var(--ink); }
+  .steps b { color: var(--veto); font-weight: 500; }
+  .foot { position: absolute; left: 120px; bottom: 90px; font-size: 24px; color: var(--muted); }
+  .card { position: absolute; background: #fbfbf9; border-radius: 6px;
+          box-shadow: 0 2px 0 oklch(0.88 0.01 152), 0 24px 60px -24px oklch(0.26 0.045 266 / 0.45); overflow: hidden; }
+  .veto { left: 860px; top: 150px; width: 640px; transform: rotate(-1.5deg); }
+  .slip { left: 1380px; top: 250px; width: 440px; transform: rotate(2deg); }
+  .card img { display: block; width: 100%; }
+</style>
+</head>
+<body>
+  <div class="copy">
+    <div class="brand">MeetSpot 饭局 Agent</div>
+    <h1>几个人吃饭，<br>去哪、点什么<br>一次谈拢</h1>
+    <p class="steps">每人说一句要求<br><b>先划掉</b>不合适的店，写清是谁的哪条<br>到店拍菜单，出一张大家都能吃的点菜单</p>
+  </div>
+  <div class="foot">高德餐厅数据 · 通义千问读菜单 · 规则由代码逐条核对</div>
+  <div class="card veto"><img src="veto.png" alt=""></div>
+  <div class="card slip"><img src="slip.png" alt=""></div>
+</body>
+</html>
