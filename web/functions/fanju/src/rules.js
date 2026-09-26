@@ -4,7 +4,8 @@
 export const UNVERIFIED_NOTE = '按品类初筛，未核实';
 export const ALLERGY_DISCLAIMER = '过敏原请向店员确认';
 
-const SEAFOOD = /海鲜|海产|虾|蟹|贝|蚝|鲍|刺身|寿司|日本料理|鱼/;
+// 鱼香 is a sauce style (鱼香肉丝 has no fish), so it does not count.
+const SEAFOOD = /海鲜|海产|虾|蟹|贝|蚝|鲍|刺身|寿司|日本料理|鱼(?!香)/;
 const MEAT_CENTRIC = /烧烤|烤肉|烤串|烤鸭|牛排|羊蝎子|炸鸡|涮肉|牛肉|羊肉|肉蟹|海鲜/;
 // Keyword guess only: a dish name cannot prove there is no minced meat or lard.
 const MEAT_DISH = /肉|鸡|鸭|鹅|牛|羊|猪|排骨|肠|肚|腰|肝|虾|蟹|鱼|贝|蚝|鲍|培根|火腿|麻婆/;

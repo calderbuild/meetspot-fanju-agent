@@ -94,3 +94,8 @@ test('mapo tofu is not counted as a vegetarian dish', () => {
   const r = checkOrder([{ name: '麻婆豆腐' }, { name: '宫保鸡丁' }, { name: '酸菜鱼' }, { name: '清炒时蔬' }, { name: '宫保鸡丁' }], menu, people);
   assert.ok(r.problems.some(p => p.startsWith('小张能吃的菜只有 1 道')));
 });
+
+test('yuxiang pork is not seafood', () => {
+  const r = checkOrder([{ name: '鱼香肉丝' }], [{ name: '鱼香肉丝', price: 30 }], [{ who: '小李', avoid_seafood: true }]);
+  assert.ok(!r.problems.some(p => p.startsWith('小李能吃的菜只有 0')));
+});
