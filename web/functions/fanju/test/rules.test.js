@@ -84,3 +84,13 @@ test('vegetarian with fewer than two edible dishes is a problem', () => {
   const r = checkOrder([{ name: '宫保鸡丁' }, { name: '酸菜鱼' }, { name: '清炒时蔬' }, { name: '宫保鸡丁' }, { name: '酸菜鱼' }], menu, people);
   assert.ok(r.problems.some(p => p.startsWith('小张')));
 });
+
+test('any vegetarian at the table gets a fixed ask-the-waiter warning', () => {
+  const r = checkOrder([{ name: '清炒时蔬' }, { name: '麻婆豆腐' }, { name: '干煸四季豆' }, { name: '宫保鸡丁' }, { name: '酸菜鱼' }], menu, people);
+  assert.ok(r.warnings.some(w => w.includes('小张') && w.includes('店员')));
+});
+
+test('mapo tofu is not counted as a vegetarian dish', () => {
+  const r = checkOrder([{ name: '麻婆豆腐' }, { name: '宫保鸡丁' }, { name: '酸菜鱼' }, { name: '清炒时蔬' }, { name: '宫保鸡丁' }], menu, people);
+  assert.ok(r.problems.some(p => p.startsWith('小张能吃的菜只有 1 道')));
+});

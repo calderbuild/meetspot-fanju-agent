@@ -6,7 +6,8 @@ export const ALLERGY_DISCLAIMER = '过敏原请向店员确认';
 
 const SEAFOOD = /海鲜|海产|虾|蟹|贝|蚝|鲍|刺身|寿司|日本料理|鱼/;
 const MEAT_CENTRIC = /烧烤|烤肉|烤串|烤鸭|牛排|羊蝎子|炸鸡|涮肉|牛肉|羊肉|肉蟹|海鲜/;
-const MEAT_DISH = /肉|鸡|鸭|鹅|牛|羊|猪|排骨|肠|肚|腰|肝|虾|蟹|鱼|贝|蚝|鲍|培根|火腿/;
+// Keyword guess only: a dish name cannot prove there is no minced meat or lard.
+const MEAT_DISH = /肉|鸡|鸭|鹅|牛|羊|猪|排骨|肠|肚|腰|肝|虾|蟹|鱼|贝|蚝|鲍|培根|火腿|麻婆/;
 // Places that are not a sit-down group meal.
 const NOT_A_MEAL = /咖啡|茶|甜品|面包|冷饮|糕饼|酒吧|早餐|早点|便利/;
 
@@ -106,6 +107,8 @@ export function checkOrder(plan, menu, people) {
       if (why?.endsWith('过敏')) warnings.push(`「${name}」可能含${why.slice(0, -2)}，${p.who}注意`);
     }
   }
+  const vegetarians = people.filter(p => p.vegetarian).map(p => p.who);
+  if (vegetarians.length) warnings.push(`菜名看不出有没有肉末或荤油，${vegetarians.join('、')}吃之前请向店员确认`);
   const headcount = people.length;
   const target = headcount + 1; // ponytail: rule of thumb, labelled as an estimate in the UI
   if (Math.abs(plan.length - target) > 1) problems.push(`${headcount} 人建议点 ${target} 道左右，现在是 ${plan.length} 道`);
