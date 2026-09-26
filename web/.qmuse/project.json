@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "projectKind": "EXTERNAL_REPOSITORY",
+  "appType": "GENERAL",
+  "targets": {
+    "prod": {
+      "apiBaseUrl": "https://api.qmuse.cn",
+      "appId": "3163078624095246",
+      "spaceId": "S187365653604",
+      "lastVersionId": "84400089",
+      "lastSourceHash": "1602f45573455da4505ef7ddac522914a256612415389e832221b0717de21d8f",
+      "updatedAt": "2026-09-26T03:32:40.455Z"
+    }
+  }
+}
