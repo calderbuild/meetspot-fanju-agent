@@ -44,6 +44,7 @@
 - 餐厅数据：高德地图 Web 服务（地理编码、周边餐饮搜索）
 - 开发与部署：QMuse（React 前端 + QMuse 云函数），本地用 QMuse CLI 导入
 - 代码：GitHub `calderbuild/meetspot-fanju-agent`（MIT）
+- 示例菜单照片：广州莲香楼菜单实拍，Wikimedia Commons 用户 MeiOLA 2290 WMENSZ 拍摄，CC0。页面上标明是示例，不是所选餐厅的菜单
 
 ## 真实使用情况
 
