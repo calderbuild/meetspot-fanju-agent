@@ -57,3 +57,11 @@ test('unknown action and bad input fail with a message, not a crash', async () =
   assert.equal(r.status, 500);
   assert.match(r.message, /2 到 8/);
 });
+
+test('who a dish suits comes from rules, not from model text', async () => {
+  stubModel([{ dishes: [{ name: '宫保鸡丁', why: '适合吃素的甲' }, { name: '清炒时蔬' }, { name: '麻婆豆腐' }, { name: '干煸四季豆' }] }]);
+  const r = await call({ action: 'plan-order', menu, people });
+  const gongbao = r.data.dishes.find(d => d.name === '宫保鸡丁');
+  assert.deepEqual(gongbao.fitsFor, ['乙', '丙']);
+  assert.equal('why' in gongbao, false);
+});

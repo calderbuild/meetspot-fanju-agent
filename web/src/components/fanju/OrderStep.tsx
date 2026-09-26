@@ -117,7 +117,9 @@ function OrderSlip({ order, venue, headcount }: { order: OrderPlan; venue: Venue
               {d.qty > 1 && <span className="font-mono text-xs">×{d.qty}</span>}
               <span className="ml-auto font-mono tabular-nums">{yuan(d.price * d.qty)}</span>
             </div>
-            {d.why && <p className="text-xs text-muted-foreground">{d.why}</p>}
+            <p className="text-xs text-muted-foreground">
+              {d.fitsFor.length ? `按菜名看，${d.fitsFor.join("、")}能吃` : "按菜名看，不适合在座的人"}
+            </p>
           </li>
         ))}
       </ol>

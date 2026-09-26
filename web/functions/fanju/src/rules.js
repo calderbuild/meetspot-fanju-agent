@@ -81,7 +81,7 @@ export function explainRejection(attempt) {
 
 // Stage 2 --------------------------------------------------------------------
 
-function excludedFor(person, dishName) {
+export function excludedFor(person, dishName) {
   if (person.vegetarian && MEAT_DISH.test(dishName)) return '吃素';
   if (person.avoid_seafood && SEAFOOD.test(dishName)) return '不吃海鲜';
   const hit = (person.allergens ?? []).find(a => allergenPattern(a).test(dishName));

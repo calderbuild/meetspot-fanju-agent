@@ -47,7 +47,7 @@ export interface Dish {
 }
 
 export interface OrderPlan {
-  dishes: { name: string; qty: number; price: number; why: string }[];
+  dishes: { name: string; qty: number; price: number; fitsFor: string[] }[];
   ok: boolean;
   problems: string[];
   warnings: string[];

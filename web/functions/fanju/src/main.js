@@ -1,6 +1,6 @@
 import { geocode, restaurantsAround } from './amap.js';
 import { chatJson } from './llm.js';
-import { planVenue, checkOrder, explainRejection, ALLERGY_DISCLAIMER } from './rules.js';
+import { planVenue, checkOrder, excludedFor, explainRejection, ALLERGY_DISCLAIMER } from './rules.js';
 
 const PARSE_PROMPT = `你把每个人对聚餐的一句话要求整理成 JSON。只根据原话，不要补充原话里没有的限制。
 输出格式：{"people":[{"who":"称呼","vegetarian":布尔,"avoid_seafood":布尔,"allergens":["过敏原"],"budget_max":人均预算数字或null,"spicy":"like"|"avoid"|"any","cuisines_like":["想吃的菜系"]}]}
@@ -10,9 +10,8 @@ const MENU_PROMPT = `这是一张餐厅菜单照片。逐条读出能看清的�
 只写照片里真实出现的菜，看不清的价格写 null，不要猜，不要补充照片上没有的菜。`;
 
 const ORDER_PROMPT = `你是聚餐点菜助手。只能从给定菜单里选菜，菜名必须一字不差。
-根据每个人的限制和人数给出点菜方案，输出 JSON：{"dishes":[{"name":"菜名","qty":份数,"why":"一句理由"}]}。
-照顾每个人都有至少两道能吃的菜，控制在预算内。
-why 只写这道菜照顾了谁、为什么点。不要断言食材或做法（例如「是素菜」「不含花生」「微辣」），菜名看不出这些，要由店员确认。`;
+根据每个人的限制和人数给出点菜方案，输出 JSON：{"dishes":[{"name":"菜名","qty":份数}]}。
+照顾每个人都有至少两道能吃的菜，控制在预算内。`;
 
 function toPerson(raw, input) {
   return {
@@ -87,7 +86,12 @@ async function planOrderAction({ menu, people }) {
   return {
     dishes: plan
       .filter(i => prices.has(String(i.name).trim()))
-      .map(i => ({ name: i.name.trim(), qty: i.qty ?? 1, price: prices.get(i.name.trim()), why: String(i.why ?? '').slice(0, 60) })),
+      .map(i => {
+        const name = i.name.trim();
+        // Who can eat it is computed from the dish name, never taken from the model.
+        const fitsFor = people.filter(p => !excludedFor(p, name)).map(p => p.who);
+        return { name, qty: i.qty ?? 1, price: prices.get(name), fitsFor };
+      }),
     ...check,
     retried,
     disclaimer: ALLERGY_DISCLAIMER,
