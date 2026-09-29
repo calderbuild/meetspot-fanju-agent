@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { planVenue, checkOrder, normalizePoi, UNVERIFIED_NOTE } from '../src/rules.js';
+import { planVenue, checkOrder, excludedFor, normalizePoi, UNVERIFIED_NOTE } from '../src/rules.js';
 
 const people = [
   { who: '小王', budget_max: 100 },
@@ -98,4 +98,9 @@ test('mapo tofu is not counted as a vegetarian dish', () => {
 test('yuxiang pork is not seafood', () => {
   const r = checkOrder([{ name: '鱼香肉丝' }], [{ name: '鱼香肉丝', price: 30 }], [{ who: '小李', avoid_seafood: true }]);
   assert.ok(!r.problems.some(p => p.startsWith('小李能吃的菜只有 0')));
+});
+
+test('peanut allergy covers dishes that usually contain peanuts without saying so', () => {
+  assert.equal(excludedFor({ who: '小陈', allergens: ['花生'] }, '宫保鸡丁'), '花生过敏');
+  assert.equal(excludedFor({ who: '小陈', allergens: ['花生'] }, '清炒时蔬'), null);
 });

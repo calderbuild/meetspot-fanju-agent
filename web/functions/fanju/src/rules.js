@@ -28,8 +28,12 @@ export function normalizePoi(p) {
   };
 }
 
+// Dishes whose names do not say the allergen but usually contain it (宫保鸡丁 has peanuts).
+const IMPLIED = { 花生: '宫保|夫妻肺片|担担|怪味' };
+
 function allergenPattern(allergen) {
-  return /海鲜|虾|蟹|贝/.test(allergen) ? SEAFOOD : new RegExp(allergen);
+  if (/海鲜|虾|蟹|贝/.test(allergen)) return SEAFOOD;
+  return new RegExp([allergen, IMPLIED[allergen]].filter(Boolean).join('|'));
 }
 
 // Quote where the keyword was found so the explanation is checkable by the reader.
