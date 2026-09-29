@@ -9,8 +9,11 @@ import { planOrder, readMenu, type Constraint, type Dish, type OrderPlan, type V
 import { Failed, Step, Working, errorText, yuan } from "./shared";
 
 // The published site serves the page and its static files from different hosts, so a page-relative path misses.
-// public/ files sit one level above the built chunk in assets/. ponytail: assumes the built layout; the dev server is not used here.
-const SAMPLE_MENU = import.meta.url.replace(/assets\/[^/]+$/, "sample-menu.jpg");
+// In the build, public/ files sit one level above the chunk in assets/. The editor preview runs the dev
+// server, where this module is served from /src/ and public/ files are at the root.
+const SAMPLE_MENU = /\/assets\/[^/]+$/.test(import.meta.url)
+  ? import.meta.url.replace(/assets\/[^/]+$/, "sample-menu.jpg")
+  : "/sample-menu.jpg";
 
 type Phase ={ k: "idle" } | { k: "reading" } | { k: "planning" } | { k: "error"; msg: string; retry: () => void };
 
