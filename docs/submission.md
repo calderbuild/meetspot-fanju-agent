@@ -49,7 +49,7 @@
 ## 作品演示
 
 - 封面：`docs/cover/cover.jpg`（1920×1080，约 280KB，由 `docs/cover/cover.html` 渲染，两张截图都来自已发布的线上应用）
-- 视频：选填，这一版不交
+- 视频：`docs/video/intro.mp4`（83 秒，1920×1080，ElevenLabs 配音 + 中文字幕，画面全部来自线上应用）；表单里传的是 CRF 28 重压的 4.5MB 版本
 
 ## 内部备注（不提交）
 
