@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>MeetSpot 饭局 Agent 介绍</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      /* Same palette and type as docs/cover/cover.html and the app itself. */
+      @font-face { font-family: "Fanju Kai"; src: local("Kaiti SC"), local("STKaiti"), local("KaiTi"); }
+      @font-face { font-family: "Fanju Sans"; src: local("PingFang SC"), local("Hiragino Sans GB"); }
+      :root {
+        --bg: oklch(0.947 0.014 152);
+        --ink: oklch(0.26 0.045 266);
+        --primary: oklch(0.44 0.15 266);
+        --veto: oklch(0.55 0.18 29);
+        --muted: oklch(0.48 0.03 266);
+        --paper: #fbfbf9;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--bg);
+              color: var(--ink); font-family: "Fanju Sans", sans-serif; }
+      .clip { position: absolute; inset: 0; }
+      .left { position: absolute; left: 120px; top: 220px; width: 800px; }
+      .step { font-size: 30px; letter-spacing: 0.06em; color: var(--muted); }
+      h1 { margin-top: 28px; font-family: "Fanju Kai", serif; font-weight: 400; font-size: 84px; line-height: 1.25; }
+      h1 .nl { display: block; }
+      .sub { margin-top: 26px; font-size: 36px; line-height: 1.5; color: var(--ink); }
+      .sub:first-of-type { margin-top: 44px; }
+      .quote { position: absolute; display: flex; gap: 24px; align-items: baseline; padding: 26px 36px;
+               background: var(--paper); border-radius: 6px; font-size: 38px;
+               box-shadow: 0 2px 0 oklch(0.88 0.01 152), 0 24px 60px -24px oklch(0.26 0.045 266 / 0.45); }
+      .quote b { font-weight: 500; color: var(--primary); font-size: 32px; }
+      .quote span { font-family: "Fanju Kai", serif; }
+      .card { position: absolute; left: 1010px; top: 56px; width: 812px; height: 860px; overflow: hidden;
+              border-radius: 10px; background: var(--bg);
+              box-shadow: 0 2px 0 oklch(0.88 0.01 152), 0 30px 70px -28px oklch(0.26 0.045 266 / 0.5); }
+      .plate { position: absolute; left: 0; top: 0; width: 812px; }
+      .plate img { display: block; width: 812px; }
+      .mark { position: absolute; border: 4px solid var(--veto); border-radius: 8px; opacity: 0;
+              background: oklch(0.55 0.18 29 / 0.06); }
+      .slip { position: absolute; left: 1120px; top: 56px; width: 612px; height: 830px; border-radius: 6px; overflow: hidden;
+              background: var(--paper); transform: rotate(1.2deg);
+              box-shadow: 0 2px 0 oklch(0.88 0.01 152), 0 30px 70px -28px oklch(0.26 0.045 266 / 0.5); }
+      .slip img { display: block; width: 612px; }
+      .split { display: flex; align-items: center; gap: 28px; margin-bottom: 52px; font-size: 40px; line-height: 1.4; }
+      .tag { flex: none; padding: 8px 20px; border-radius: 6px; font-size: 30px; color: #fff; background: var(--primary); }
+      .tag.code { background: var(--ink); }
+      .tag.warn { background: var(--veto); }
+      .close { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding-left: 160px; }
+      .close h1 { font-size: 96px; }
+      .url { margin-top: 48px; font-size: 36px; color: var(--primary); letter-spacing: 0.02em; }
+      .cap { display: flex; align-items: flex-end; justify-content: center; padding-bottom: 54px; }
+      .cap span { padding: 12px 34px; border-radius: 8px; background: oklch(0.26 0.045 266 / 0.86); color: #fff;
+                  font-size: 44px; line-height: 1.35; letter-spacing: 0.02em; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="{{TOTAL}}" data-width="1920" data-height="1080">
+      {{CLIPS}}
+      {{CAPTIONS}}
+      {{AUDIO}}
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      {{TIMELINE}}
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

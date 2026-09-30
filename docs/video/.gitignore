@@ -1,0 +1,6 @@
+snapshots/
+renders/
+node_modules/
+.hyperframes/
+AGENTS.md
+CLAUDE.md

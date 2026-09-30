@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>MeetSpot 饭局 Agent 介绍</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      /* Same palette and type as docs/cover/cover.html and the app itself. */
+      @font-face { font-family: "Fanju Kai"; src: local("Kaiti SC"), local("STKaiti"), local("KaiTi"); }
+      @font-face { font-family: "Fanju Sans"; src: local("PingFang SC"), local("Hiragino Sans GB"); }
+      :root {
+        --bg: oklch(0.947 0.014 152);
+        --ink: oklch(0.26 0.045 266);
+        --primary: oklch(0.44 0.15 266);
+        --veto: oklch(0.55 0.18 29);
+        --muted: oklch(0.48 0.03 266);
+        --paper: #fbfbf9;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--bg);
+              color: var(--ink); font-family: "Fanju Sans", sans-serif; }
+      .clip { position: absolute; inset: 0; }
+      .left { position: absolute; left: 120px; top: 220px; width: 800px; }
+      .step { font-size: 30px; letter-spacing: 0.06em; color: var(--muted); }
+      h1 { margin-top: 28px; font-family: "Fanju Kai", serif; font-weight: 400; font-size: 84px; line-height: 1.25; }
+      h1 .nl { display: block; }
+      .sub { margin-top: 26px; font-size: 36px; line-height: 1.5; color: var(--ink); }
+      .sub:first-of-type { margin-top: 44px; }
+      .quote { position: absolute; display: flex; gap: 24px; align-items: baseline; padding: 26px 36px;
+               background: var(--paper); border-radius: 6px; font-size: 38px;
+               box-shadow: 0 2px 0 oklch(0.88 0.01 152), 0 24px 60px -24px oklch(0.26 0.045 266 / 0.45); }
+      .quote b { font-weight: 500; color: var(--primary); font-size: 32px; }
+      .quote span { font-family: "Fanju Kai", serif; }
+      .card { position: absolute; left: 1010px; top: 56px; width: 812px; height: 860px; overflow: hidden;
+              border-radius: 10px; background: var(--bg);
+              box-shadow: 0 2px 0 oklch(0.88 0.01 152), 0 30px 70px -28px oklch(0.26 0.045 266 / 0.5); }
+      .plate { position: absolute; left: 0; top: 0; width: 812px; }
+      .plate img { display: block; width: 812px; }
+      .mark { position: absolute; border: 4px solid var(--veto); border-radius: 8px; opacity: 0;
+              background: oklch(0.55 0.18 29 / 0.06); }
+      .slip { position: absolute; left: 1120px; top: 56px; width: 612px; height: 830px; border-radius: 6px; overflow: hidden;
+              background: var(--paper); transform: rotate(1.2deg);
+              box-shadow: 0 2px 0 oklch(0.88 0.01 152), 0 30px 70px -28px oklch(0.26 0.045 266 / 0.5); }
+      .slip img { display: block; width: 612px; }
+      .split { display: flex; align-items: center; gap: 28px; margin-bottom: 52px; font-size: 40px; line-height: 1.4; }
+      .tag { flex: none; padding: 8px 20px; border-radius: 6px; font-size: 30px; color: #fff; background: var(--primary); }
+      .tag.code { background: var(--ink); }
+      .tag.warn { background: var(--veto); }
+      .close { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding-left: 160px; }
+      .close h1 { font-size: 96px; }
+      .url { margin-top: 48px; font-size: 36px; color: var(--primary); letter-spacing: 0.02em; }
+      .cap { display: flex; align-items: flex-end; justify-content: center; padding-bottom: 54px; }
+      .cap span { padding: 12px 34px; border-radius: 8px; background: oklch(0.26 0.045 266 / 0.86); color: #fff;
+                  font-size: 44px; line-height: 1.35; letter-spacing: 0.02em; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="83.28" data-width="1920" data-height="1080">
+      <section id="s1a" class="clip " data-start="0" data-duration="4.017" data-track-index="1"><div class="close"><div id="s1-brand" class="step">MeetSpot 饭局 Agent</div><h1 id="s1-me">我是 Calder</h1><p id="s1-me2" class="sub">在读学生，这个作品是我一个人做的</p></div></section>
+      <section id="s1" class="clip " data-start="4.017" data-duration="12.169" data-track-index="1"><div class="left"><div id="s1-k" class="step">约朋友吃饭</div><h1 id="s1-h">最累的不是吃，<span class="nl">是在群里来回商量</span></h1><p id="s1-l0" class="sub">到了店里，点菜又得再来一轮</p></div><div id="q0" class="quote" style="top:300px;left:1010px"><b>小王</b><span>“人均别超过 80，最近手头紧”</span></div><div id="q1" class="quote" style="top:460px;left:1120px"><b>小李</b><span>“我不吃海鲜，别的都行”</span></div><div id="q2" class="quote" style="top:620px;left:1010px"><b>小张</b><span>“我吃素”</span></div><div id="q3" class="quote" style="top:780px;left:1120px"><b>小陈</b><span>“花生过敏，想吃点辣的”</span></div></section>
+      <section id="card-a" class="clip " data-start="16.186" data-duration="28.994" data-track-index="2"><div class="card"><div id="pa" class="plate" data-layout-allow-overflow><img src="assets/plate-a.png" alt=""><div id="m-row0" class="mark" style="left:0px;top:1692px;width:812px;height:97px"></div><div id="m-row1" class="mark" style="left:0px;top:1789px;width:812px;height:97px"></div><div id="m-row2" class="mark" style="left:0px;top:1886px;width:812px;height:97px"></div><div id="m-row3" class="mark" style="left:0px;top:1983px;width:812px;height:96px"></div><div id="m-zhao" class="mark" style="left:28px;top:2330px;width:420px;height:90px"></div><div id="m-tag0" class="mark" style="left:34px;top:3021px;width:212px;height:50px"></div><div id="m-tag1" class="mark" style="left:34px;top:3247px;width:212px;height:50px"></div><div id="m-tag2" class="mark" style="left:34px;top:3473px;width:212px;height:50px"></div></div></div></section>
+      <section id="s2" class="clip " data-start="16.186" data-duration="7.441" data-track-index="1"><div class="left"><div id="s2-step" class="step">1/3</div><h1 id="s2-h">谁来吃</h1><p id="s2-l0" class="sub">每人说一句自己的要求</p><p id="s2-l1" class="sub">大白话就行</p></div></section>
+      <section id="s3" class="clip " data-start="23.627" data-duration="6.188" data-track-index="1"><div class="left"><div id="s3-step" class="step">2/3</div><h1 id="s3-h">去哪吃</h1><p id="s3-l0" class="sub">先把每个人的话整理成条件</p><p id="s3-l1" class="sub">列出来，大家核对</p></div></section>
+      <section id="s4" class="clip " data-start="29.815" data-duration="15.365" data-track-index="1"><div class="left"><div id="s4-step" class="step">2/3</div><h1 id="s4-h">先划掉不合适的店</h1><p id="s4-l0" class="sub">每一家都写清是谁的哪条要求</p><p id="s4-l1" class="sub">留下的店标注：按品类初筛，未核实</p></div></section>
+      <section id="card-b" class="clip " data-start="45.18" data-duration="10.504" data-track-index="2"><div class="card"><div id="pb" class="plate" data-layout-allow-overflow><img src="assets/plate-b.png" alt=""><div id="m-price" class="mark" style="left:0px;top:1604px;width:812px;height:76px"></div></div></div></section>
+      <section id="s5" class="clip " data-start="45.18" data-duration="10.504" data-track-index="1"><div class="left"><div id="s5-step" class="step">3/3</div><h1 id="s5-h">点什么</h1><p id="s5-l0" class="sub">只读照片上真有的菜名和价格</p><p id="s5-l1" class="sub">读错的地方直接改</p><p id="s5-l2" class="sub">示例菜单：一张真实的餐厅菜单照片</p></div></section>
+      <section id="card-c" class="clip " data-start="55.684" data-duration="22.123" data-track-index="2"><div id="slipwrap" class="slip"><img src="assets/slip.png" alt=""><div id="m-total" class="mark" style="left:12px;top:572px;width:588px;height:80px"></div><div id="m-allergy" class="mark" style="left:12px;top:710px;width:588px;height:60px"></div></div></section>
+      <section id="s6" class="clip " data-start="55.684" data-duration="7.793" data-track-index="1"><div class="left"><h1 id="s6-h">一张点菜单</h1><p id="s6-l0" class="sub">每道菜下面写着谁能吃</p><p id="s6-l1" class="sub">总价按菜单价格算出，人均 ¥64</p></div></section>
+      <section id="s7" class="clip " data-start="63.477" data-duration="14.33" data-track-index="1"><div class="left"><div id="s7-a" class="split"><span class="tag">模型</span>听懂每个人的话，读菜单照片</div><div id="s7-b" class="split"><span class="tag code">代码</span>逐条检查规则，每次否决都有理由</div><div id="s7-c" class="split"><span class="tag warn">过敏</span>只做提示，请向店员确认</div></div></section>
+      <section id="s8" class="clip " data-start="77.807" data-duration="5.473" data-track-index="1"><div class="close"><div id="s8-b" class="step">MeetSpot 饭局 Agent</div><h1 id="s8-h">几个人吃饭，去哪、点什么，一次谈拢</h1><p id="s8-u" class="url">render.qmuse.pub/p/muse/3163078624095246</p></div></section>
+      <div id="cap-s1-0" class="clip cap" data-start="0.4" data-duration="3.617" data-track-index="20"><span>我是 Calder，在读学生，这个是我一个人做的</span></div>
+      <div id="cap-s1-1" class="clip cap" data-start="4.017" data-duration="4.592" data-track-index="20"><span>约朋友吃饭，其实最累的不是吃，是在群里来回商量</span></div>
+      <div id="cap-s1-2" class="clip cap" data-start="8.609" data-duration="3.2" data-track-index="20"><span>有人吃素，有人不吃海鲜，有人预算紧</span></div>
+      <div id="cap-s1-3" class="clip cap" data-start="11.809" data-duration="1.53" data-track-index="20"><span>还有人花生过敏</span></div>
+      <div id="cap-s1-4" class="clip cap" data-start="13.339" data-duration="2.615" data-track-index="20"><span>到了店里，点菜又得再来一轮</span></div>
+      <div id="cap-s2-0" class="clip cap" data-start="16.186" data-duration="2.643" data-track-index="20"><span>所以我做了 MeetSpot 饭局 Agent</span></div>
+      <div id="cap-s2-1" class="clip cap" data-start="18.829" data-duration="1.6" data-track-index="20"><span>第一步，谁来吃</span></div>
+      <div id="cap-s2-2" class="clip cap" data-start="20.429" data-duration="2.964" data-track-index="20"><span>每个人说一句自己的要求，大白话就行</span></div>
+      <div id="cap-s3-0" class="clip cap" data-start="23.627" data-duration="1.878" data-track-index="20"><span>第二步，去哪吃</span></div>
+      <div id="cap-s3-1" class="clip cap" data-start="25.505" data-duration="2.922" data-track-index="20"><span>它先把每个人的话整理成条件，列出来</span></div>
+      <div id="cap-s3-2" class="clip cap" data-start="28.427" data-duration="1.154" data-track-index="20"><span>大家对一眼</span></div>
+      <div id="cap-s4-0" class="clip cap" data-start="29.815" data-duration="4.174" data-track-index="20"><span>然后在大家中间找附近的店，不合适的直接划掉</span></div>
+      <div id="cap-s4-1" class="clip cap" data-start="33.989" data-duration="3.269" data-track-index="20"><span>你看，每一家都写着是谁的哪条要求</span></div>
+      <div id="cap-s4-2" class="clip cap" data-start="37.258" data-duration="3.687" data-track-index="20"><span>比如小张吃素，这家的招牌菜是烤鸭</span></div>
+      <div id="cap-s4-3" class="clip cap" data-start="40.945" data-duration="2.853" data-track-index="20"><span>留下来的店，我标的是按品类初筛</span></div>
+      <div id="cap-s4-4" class="clip cap" data-start="43.798" data-duration="1.154" data-track-index="20"><span>还没核实</span></div>
+      <div id="cap-s5-0" class="clip cap" data-start="45.18" data-duration="1.878" data-track-index="20"><span>第三步，点什么</span></div>
+      <div id="cap-s5-1" class="clip cap" data-start="47.058" data-duration="3.826" data-track-index="20"><span>到店拍一下菜单，它只读照片上真有的菜和价格</span></div>
+      <div id="cap-s5-2" class="clip cap" data-start="50.884" data-duration="1.739" data-track-index="20"><span>读错了直接改就行</span></div>
+      <div id="cap-s5-3" class="clip cap" data-start="52.623" data-duration="2.824" data-track-index="20"><span>没在店里，也能用一张示例菜单试试</span></div>
+      <div id="cap-s6-0" class="clip cap" data-start="55.684" data-duration="1.948" data-track-index="20"><span>最后出一张点菜单</span></div>
+      <div id="cap-s6-1" class="clip cap" data-start="57.632" data-duration="3.409" data-track-index="20"><span>每道菜写着谁能吃，总价按菜单价格算</span></div>
+      <div id="cap-s6-2" class="clip cap" data-start="61.041" data-duration="2.197" data-track-index="20"><span>人均六十四，没超预算</span></div>
+      <div id="cap-s7-0" class="clip cap" data-start="63.477" data-duration="4.104" data-track-index="20"><span>这里模型只干两件事，听懂人话，读菜单</span></div>
+      <div id="cap-s7-1" class="clip cap" data-start="67.581" data-duration="3.27" data-track-index="20"><span>规则都是代码一条一条查的，所以每次划掉</span></div>
+      <div id="cap-s7-2" class="clip cap" data-start="70.851" data-duration="1.183" data-track-index="20"><span>都有理由</span></div>
+      <div id="cap-s7-3" class="clip cap" data-start="72.034" data-duration="3.408" data-track-index="20"><span>过敏它只做提示，点菜单上一直写着</span></div>
+      <div id="cap-s7-4" class="clip cap" data-start="75.442" data-duration="2.128" data-track-index="20"><span>过敏原请向店员确认</span></div>
+      <div id="cap-s8-0" class="clip cap" data-start="77.807" data-duration="3.589" data-track-index="20"><span>下次约饭，把链接丢进群里，每人说一句就行</span></div>
+      <audio id="vo-s1" src="audio/vo/s1.mp3" data-start="0.4" data-duration="15.236" data-track-index="10" data-volume="1"></audio><audio id="vo-s2" src="audio/vo/s2.mp3" data-start="16.186" data-duration="6.891" data-track-index="10" data-volume="1"></audio><audio id="vo-s3" src="audio/vo/s3.mp3" data-start="23.627" data-duration="5.638" data-track-index="10" data-volume="1"></audio><audio id="vo-s4" src="audio/vo/s4.mp3" data-start="29.815" data-duration="14.815" data-track-index="10" data-volume="1"></audio><audio id="vo-s5" src="audio/vo/s5.mp3" data-start="45.18" data-duration="9.954" data-track-index="10" data-volume="1"></audio><audio id="vo-s6" src="audio/vo/s6.mp3" data-start="55.684" data-duration="7.243" data-track-index="10" data-volume="1"></audio><audio id="vo-s7" src="audio/vo/s7.mp3" data-start="63.477" data-duration="13.78" data-track-index="10" data-volume="1"></audio><audio id="vo-s8" src="audio/vo/s8.mp3" data-start="77.807" data-duration="3.276" data-track-index="10" data-volume="1"></audio>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#s1-brand", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 0.1);
+      tl.fromTo("#s1-me", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 0.5);
+      tl.fromTo("#s1-me2", {opacity: 0, y: 16}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 1.6);
+      tl.fromTo("#s1-k", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 4.017);
+      tl.fromTo("#s1-h", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 4.117);
+      tl.fromTo("#q0", {opacity: 0, y: 30}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 8.609);
+      tl.fromTo("#q1", {opacity: 0, y: 30}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 9.709);
+      tl.fromTo("#q2", {opacity: 0, y: 30}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 10.809000000000001);
+      tl.fromTo("#q3", {opacity: 0, y: 30}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 11.809);
+      tl.fromTo("#s1-l0", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 13.339);
+      tl.fromTo("#card-a .card", {opacity: 0, y: 40}, {opacity: 1, y: 0, duration: 0.7, ease: "power3.out"}, 16.186);
+      tl.set("#pa", {y: -300}, 16.186);
+      tl.to("#pa", {y: -620, duration: 6.240999999999999, ease: "power2.inOut"}, 17.186);
+      tl.to("#pa", {y: -1560, duration: 1.0, ease: "power2.inOut"}, 23.627);
+      tl.fromTo("#m-row0", {opacity: 0, scale: 1.04}, {opacity: 1, scale: 1, duration: 0.35, ease: "power2.out"}, 25.755);
+      tl.fromTo("#m-row1", {opacity: 0, scale: 1.04}, {opacity: 1, scale: 1, duration: 0.35, ease: "power2.out"}, 26.305);
+      tl.fromTo("#m-row2", {opacity: 0, scale: 1.04}, {opacity: 1, scale: 1, duration: 0.35, ease: "power2.out"}, 26.855);
+      tl.fromTo("#m-row3", {opacity: 0, scale: 1.04}, {opacity: 1, scale: 1, duration: 0.35, ease: "power2.out"}, 27.404999999999998);
+      tl.to("#m-row0", {opacity: 0, duration: 0.3}, 29.815);
+      tl.to("#m-row1", {opacity: 0, duration: 0.3}, 29.815);
+      tl.to("#m-row2", {opacity: 0, duration: 0.3}, 29.815);
+      tl.to("#m-row3", {opacity: 0, duration: 0.3}, 29.815);
+      tl.to("#pa", {y: -2100, duration: 1.2, ease: "power2.inOut"}, 29.915000000000003);
+      tl.fromTo("#m-zhao", {opacity: 0, scale: 1.04}, {opacity: 1, scale: 1, duration: 0.35, ease: "power2.out"}, 37.258);
+      tl.to("#m-zhao", {opacity: 0, duration: 0.3}, 40.745);
+      tl.to("#pa", {y: -2860, duration: 1.0, ease: "power2.inOut"}, 40.845);
+      tl.fromTo("#m-tag0", {opacity: 0, scale: 1.04}, {opacity: 1, scale: 1, duration: 0.35, ease: "power2.out"}, 41.945);
+      tl.fromTo("#m-tag1", {opacity: 0, scale: 1.04}, {opacity: 1, scale: 1, duration: 0.35, ease: "power2.out"}, 42.245);
+      tl.fromTo("#m-tag2", {opacity: 0, scale: 1.04}, {opacity: 1, scale: 1, duration: 0.35, ease: "power2.out"}, 42.545);
+      tl.fromTo("#s2-step", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 16.236);
+      tl.fromTo("#s2-h", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 16.306);
+      tl.fromTo("#s2-l0", {opacity: 0, y: 16}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 20.429);
+      tl.fromTo("#s2-l1", {opacity: 0, y: 16}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 21.628999999999998);
+      tl.fromTo("#s3-step", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 23.677);
+      tl.fromTo("#s3-h", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 23.747);
+      tl.fromTo("#s3-l0", {opacity: 0, y: 16}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 25.505);
+      tl.fromTo("#s3-l1", {opacity: 0, y: 16}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 28.427);
+      tl.fromTo("#s4-step", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 29.865000000000002);
+      tl.fromTo("#s4-h", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 29.935000000000002);
+      tl.fromTo("#s4-l0", {opacity: 0, y: 16}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 33.989);
+      tl.fromTo("#s4-l1", {opacity: 0, y: 16}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 40.945);
+      tl.set("#pb", {y: -20}, 45.18);
+      tl.fromTo("#card-b .card", {opacity: 0, y: 0}, {opacity: 1, y: 0, duration: 0.4, ease: "power3.out"}, 45.18);
+      tl.to("#pb", {y: -790, duration: 1.4, ease: "power2.inOut"}, 45.78);
+      tl.to("#pb", {y: -1000, duration: 0.8, ease: "power2.inOut"}, 50.384);
+      tl.fromTo("#m-price", {opacity: 0, scale: 1.04}, {opacity: 1, scale: 1, duration: 0.35, ease: "power2.out"}, 51.184);
+      tl.to("#pb", {y: -1150, duration: 2.761, ease: "power2.inOut"}, 52.623);
+      tl.fromTo("#s5-step", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 45.23);
+      tl.fromTo("#s5-h", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 45.3);
+      tl.fromTo("#s5-l0", {opacity: 0, y: 16}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 47.058);
+      tl.fromTo("#s5-l1", {opacity: 0, y: 16}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 50.884);
+      tl.fromTo("#s5-l2", {opacity: 0, y: 16}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 52.623);
+      tl.fromTo("#slipwrap", {opacity: 0, y: 40}, {opacity: 1, y: 0, duration: 0.7, ease: "power3.out"}, 55.684);
+      tl.fromTo("#m-total", {opacity: 0, scale: 1.04}, {opacity: 1, scale: 1, duration: 0.35, ease: "power2.out"}, 59.032);
+      tl.to("#m-total", {opacity: 0, duration: 0.3}, 63.477);
+      tl.fromTo("#m-allergy", {opacity: 0, scale: 1.04}, {opacity: 1, scale: 1, duration: 0.35, ease: "power2.out"}, 75.342);
+      tl.fromTo("#s6-h", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 55.803999999999995);
+      tl.fromTo("#s6-l0", {opacity: 0, y: 16}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 57.632);
+      tl.fromTo("#s6-l1", {opacity: 0, y: 16}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 61.041);
+      tl.fromTo("#s7-a", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 63.677);
+      tl.fromTo("#s7-b", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 67.581);
+      tl.fromTo("#s7-c", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 72.034);
+      tl.fromTo("#s8-b", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 77.857);
+      tl.fromTo("#s8-h", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 78.007);
+      tl.fromTo("#s8-u", {opacity: 0, y: 12}, {opacity: 1, y: 0, duration: 0.6, ease: "power3.out"}, 79.007);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
